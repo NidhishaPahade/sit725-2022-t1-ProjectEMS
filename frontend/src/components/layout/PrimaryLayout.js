@@ -11,9 +11,7 @@ import GenerateSalariesContainerComponent from "../../containers/GenerateSalarie
 import ReportsDetailsContainerComponent from "../../containers/ReportsDetailsContainerComponent";
 import EmployeeStatsContainerComponent from "../../containers/EmployeeStatsContainerComponent";
 import LoansContainerComponent from "../../containers/LoansContainerComponent";
-import About from "../../components/about/About";
-import Privacy from "../../components/about/PrivacyPolicy";
-import Terms from "../about/TermsAndConditions";
+import Profile from "../profile/Profile";
 
 class PrimaryLayout extends Component {
   constructor(props) {
@@ -71,7 +69,7 @@ class PrimaryLayout extends Component {
                   </li>
 
                   <li className={currentRoute === "/about" ? "active" : ""}>
-                    <Link to="/about"> Profile </Link>
+                    <Link to="/profile"> Profile </Link>
                   </li>
                 </ul>
                 <Link
@@ -117,9 +115,7 @@ class PrimaryLayout extends Component {
               path="/reports/details/:itemId"
               component={EmployeeStatsContainerComponent}
             />
-            <Route exact path="/about" component={About} />
-            <Route exact path="/terms" component={Terms} />
-            <Route exact path="/privacy" component={Privacy} />
+            <Route exact path="/profile" component={Profile} />
             <Redirect to="/login" />
           </Switch>
         </main>
