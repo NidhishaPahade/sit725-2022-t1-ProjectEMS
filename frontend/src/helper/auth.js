@@ -2,8 +2,8 @@ import { CLIENT_ID, gapi } from "../config/config";
 
 class Auth {
   static init() {
-    gapi.load("auth2", () => {
-      gapi.auth2.init({
+    window.gapi.load("auth2", () => {
+      window.gapi.auth2.init({
         client_id: CLIENT_ID
       });
     });
