@@ -4,13 +4,13 @@ import { bindActionCreators } from "redux";
 import moment from "moment";
 import ReactLoading from "react-loading";
 
-import ReportsDetails from "../components/reports/ReportsDetails";
+import ReportsDetails from "../components/attendance/ReportsDetails";
 import * as employeeActions from "../actions/employeeActions";
 import * as detailsActions from "../actions/reportsDetailsActions";
 
 import { saveSelectedDate } from "../actions/selectedDateActions";
 
-class ReportsDetailsContainerComponent extends Component {
+class AttendanceDetailsContainerComponent extends Component {
   state = {
     isLoading: true // initially, we assume that there's no data
   };
@@ -93,4 +93,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ReportsDetailsContainerComponent);
+)(AttendanceDetailsContainerComponent);

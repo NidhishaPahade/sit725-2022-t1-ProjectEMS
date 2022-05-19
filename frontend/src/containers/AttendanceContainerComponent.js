@@ -3,12 +3,12 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import * as reportsActions from "../actions/reportsActions";
-import Reports from "../components/reports/Reports";
+import Attendance from "../components/attendance/Attendance";
 import ReactLoading from "react-loading";
 
 import _ from "lodash";
 
-class ReportsContainerComponent extends Component {
+class AttendanceContainerComponent extends Component {
   state = {
     isLoading: false
   };
@@ -32,14 +32,14 @@ class ReportsContainerComponent extends Component {
       // if doing asyng things
       return (
         <div className="flexCenter">
-          <ReactLoading type={"bars"} color={"#48c6ef"} />
+          <ReactLoading type={"bars"} color={"pink"} />
         </div>
       );
     } // render the loading component
 
     return (
       <div>
-        <Reports history={this.props.history} reports={this.props.reports} />
+        <Attendance history={this.props.history} reports={this.props.reports} />
       </div>
     );
   }
@@ -57,11 +57,11 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-ReportsContainerComponent.propTypes = {
+AttendanceContainerComponent.propTypes = {
   reports: PropTypes.object
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ReportsContainerComponent);
+)(AttendanceContainerComponent);

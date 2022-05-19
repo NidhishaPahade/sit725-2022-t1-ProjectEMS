@@ -3,7 +3,7 @@ import { Activity } from "react-feather";
 import { Link } from "react-router-dom";
 import ReactLoading from "react-loading";
 
-class Reports extends Component {
+class Attendance extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -93,7 +93,7 @@ class Reports extends Component {
             <div className="portlet portlet-boxed">
               <div className="portlet-header">
                 <h4>
-                  List of all reports <br />
+                  List of all Attendance <br />
                 </h4>
                 <p className="portlet-title">
                   <span style={{ color: "#d282d9" }}>
@@ -136,4 +136,4 @@ class Reports extends Component {
   }
 }
 
-export default Reports;
+export default Attendance;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import EmployeeStats from "../components/reports/EmployeeStats";
+import EmployeeStats from "../components/attendance/EmployeeStats";
 import * as employeeActions from '../actions/employeeActions';
 
 

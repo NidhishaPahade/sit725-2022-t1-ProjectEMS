@@ -4,6 +4,7 @@ import Auth from "../../helper/auth";
 import PropTypes from "prop-types";
 import logo from "../../img/ems.jpg";
 import { Link } from "react-router-dom";
+import { CLIENT_ID } from "../../config/config";
 
 // import * as config from "../../config/config";
 
@@ -62,10 +63,13 @@ class Login extends Component {
             <br />
             <br />
             <GoogleLogin
+                clientId={CLIENT_ID}
               buttonText="log in with Google"
               className="btn-primary btn-login"
               onSuccess={this.onSuccess}
               onFailure={this.onFailure}
+              cookiePolicy={'single_host_origin'}
+
             />
             <div className="intro">
               <ul>

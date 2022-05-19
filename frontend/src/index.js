@@ -28,5 +28,5 @@ ReactDOM.render(
   document.getElementById("root")
 );
 
-Auth.init();
+//Auth.init();
 // registerServiceWorker();

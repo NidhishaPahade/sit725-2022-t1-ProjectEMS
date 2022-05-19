@@ -1,16 +1,15 @@
 import React, { Component } from "react";
 import logo from "../../img/ems.jpg";
 import { Switch, Route, Redirect, Link } from "react-router-dom";
-import ReportsContainerComponent from "../../containers/ReportsContainerComponent";
+import AttendanceContainerComponent from "../../containers/AttendanceContainerComponent";
 import EmployeesContainerComponent from "../../containers/EmployeesContainerComponent";
 import Auth from "../../helper/auth";
 import LoginContainerComponent from "../../containers/LoginContainerComponent";
 import EmployeeProfileContainerComponent from "../../containers/EmployeeProfileContainerComponent";
 import HomeContainerComponent from "../../containers/HomeContainerComponent";
 import GenerateSalariesContainerComponent from "../../containers/GenerateSalariesContainerComponent";
-import ReportsDetailsContainerComponent from "../../containers/ReportsDetailsContainerComponent";
+import AttendanceDetailsContainerComponent from "../../containers/AttendanceDetailsContainerComponent";
 import EmployeeStatsContainerComponent from "../../containers/EmployeeStatsContainerComponent";
-import LoansContainerComponent from "../../containers/LoansContainerComponent";
 import Profile from "../profile/Profile";
 
 class PrimaryLayout extends Component {
@@ -59,8 +58,8 @@ class PrimaryLayout extends Component {
                     <Link to="/employees"> Employees </Link>
                   </li>
 
-                  <li className={currentRoute === "/reports" ? "active" : ""}>
-                    <Link to="/reports"> Attendence </Link>
+                  <li className={currentRoute === "/attendance" ? "active" : ""}>
+                    <Link to="/attendance"> Attendence </Link>
                   </li>
 
 
@@ -87,7 +86,6 @@ class PrimaryLayout extends Component {
           <Switch>
             <Route path="/home" component={HomeContainerComponent} />
             <Route path="/login" component={LoginContainerComponent} />
-            <Route exact path="/loans" component={LoansContainerComponent} />
             <Route
               path="/salaries"
               component={GenerateSalariesContainerComponent}
@@ -103,16 +101,16 @@ class PrimaryLayout extends Component {
             />
             <Route
               exact
-              path="/reports"
-              component={ReportsContainerComponent}
+              path="/attendance"
+              component={AttendanceContainerComponent}
             />
             <Route
               exact
-              path="/reports/details"
-              component={ReportsDetailsContainerComponent}
+              path="/attendance/details"
+              component={AttendanceDetailsContainerComponent}
             />
             <Route
-              path="/reports/details/:itemId"
+              path="/attendance/details/:itemId"
               component={EmployeeStatsContainerComponent}
             />
             <Route exact path="/profile" component={Profile} />
