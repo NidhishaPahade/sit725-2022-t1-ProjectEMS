@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use('/api', LEAVE);
 
-const database = 'mongodb+srv://ritikasharma:<password>@cluster0.bnnzj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const database = 'mongodb://localhost:27017/levemanagementdb';
 
 mongoose.connect((database), {
     useUnifiedTopology: true,
