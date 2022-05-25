@@ -7,7 +7,7 @@ class EmployeeApi {
   static getEmployees() {
     return axios({
       method: "get",
-      url: employeeApiUrl + "getEmployees"
+      url: employeeApiUrl + "getEmployeeList"
     });
   }
 
@@ -32,14 +32,10 @@ class EmployeeApi {
     });
   }
 
-  static changeEmployeeStatus(rowNumber, date) {
+  static deleteEmployee(rowNumber, id) {
     return axios({
-      method: "put",
-      url: employeeApiUrl + "disableEmployee",
-      data: {
-        rowNumber,
-        date
-      },
+      method: "delete",
+      url: employeeApiUrl + "deleteEmployee/" + id,
       headers: {
         "Content-Type": "application/json"
       }

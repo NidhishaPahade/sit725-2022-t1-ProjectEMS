@@ -6,12 +6,17 @@ import * as employeeActions from '../actions/employeeActions';
 import Employees from "../components/employees/Employees";
 
 class EmployeesContainerComponent extends React.Component {
+
+    componentDidMount(){
+        this.props.actions.getEmployeesAsync();
+      }
+
     render() {
         return (
             <div>
                 <Employees employees={this.props.employees}
-                           addEmployee={this.props.actions.addEmployeeAsync}
-                           removeEmployee={this.props.actions.removeEmployeeAsync}
+                    addEmployee={this.props.actions.addEmployeeAsync}
+                    removeEmployee={this.props.actions.removeEmployeeAsync}
                 />
             </div>
         )

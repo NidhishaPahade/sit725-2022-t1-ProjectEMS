@@ -33,6 +33,7 @@ export const getEmployeesAsync = () => {
   return async dispatch => {
     try {
       const employees = await EmployeeApi.getEmployees();
+      console.log(employees,"employeesemployeesemployees")
       dispatch(getEmployees(employees.data));
     } catch (error) {
       console.log("error while loading employees", error);
@@ -45,7 +46,11 @@ export const addEmployeeAsync = (e, index) => {
   return async dispatch => {
     try {
       const employees = await EmployeeApi.addEmployee(e, index);
-      dispatch(addEmployee(employees.data));
+      // dispatch(addEmployee(employees.data));
+      if(employees){
+        const employeesGet = await EmployeeApi.getEmployees();
+          dispatch(getEmployees(employeesGet.data));
+      }
     } catch (error) {
       console.log("error while adding new employee", error);
       throw error;
@@ -53,11 +58,15 @@ export const addEmployeeAsync = (e, index) => {
   };
 };
 
-export const removeEmployeeAsync = (row, date) => {
+export const removeEmployeeAsync = (row, id) => {
   return async dispatch => {
     try {
-      const employees = await EmployeeApi.changeEmployeeStatus(row, date);
-      dispatch(removeEmployee(employees.data));
+      const employees = await EmployeeApi.deleteEmployee(row, id);
+      // dispatch(removeEmployee(employees.data));
+      if(employees){
+        const employeesGet = await EmployeeApi.getEmployees();
+          dispatch(getEmployees(employeesGet.data));
+      }
     } catch (error) {
       console.log("error while changing the status of a employee", error);
       throw error;

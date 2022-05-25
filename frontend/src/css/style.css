@@ -1503,7 +1503,7 @@ fieldset[disabled] .btn-transparent.focus {
   letter-spacing: 1px;
   border-bottom: 2px solid lightblue;
   text-transform: uppercase;
-  padding: 0px 8px 6px 8px;
+  padding: 6px 8px 6px 8px;
 }
 
 .table-bordered thead tr th,
@@ -6122,7 +6122,8 @@ header {
 }
 
 .status-column {
-  text-align: center;
+  text-align: right;
+  margin-right: 10px;
 } /*Input and forms stylig*/
 
 textarea {

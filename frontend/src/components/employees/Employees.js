@@ -4,6 +4,7 @@ import EmployeesTable from "./EmployeesTable";
 import AddEmployeeRightPanel from "./AddEmployeeRightPanel";
 
 class Employees extends Component {
+
   render() {
     const { employees, addEmployee, removeEmployee } = this.props;
     return (

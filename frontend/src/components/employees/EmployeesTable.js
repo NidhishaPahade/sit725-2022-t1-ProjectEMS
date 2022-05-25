@@ -1,13 +1,16 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { XCircle, CheckCircle } from "react-feather";
+import { XCircle, Edit , Eye} from "react-feather";
 import { confirmAlert } from "react-confirm-alert";
 import Link from "react-router-dom/es/Link";
 import * as _ from "lodash";
 import moment from "moment";
 
 class EmployeesTable extends Component {
-  setEmployeeAsInactive = rowNumber => {
+
+  
+
+  setEmployeeAsInactive = data => {
     const { removeEmployee } = this.props;
     const date = moment().format("MM-DD-YYYY"); // end-date
     confirmAlert({
@@ -15,7 +18,7 @@ class EmployeesTable extends Component {
       message: "Do you want to set this employee as inactive?",
       confirmLabel: "Confirm",
       cancelLabel: "Cancel",
-      onConfirm: () => removeEmployee(rowNumber, date)
+      onConfirm: () => removeEmployee(data, data._id)
     });
   };
 
@@ -32,9 +35,7 @@ class EmployeesTable extends Component {
 
   render() {
     const { employees } = this.props;
-    const newOrder = employees.map(emp => {
-      return emp.enddate === "" ? { ...emp, enddate: undefined } : emp;
-    });
+    const newOrder = employees && employees.data && employees.data.length ? employees.data : []
 
     const sortedEmployees = _.orderBy(
       newOrder,
@@ -50,34 +51,31 @@ class EmployeesTable extends Component {
           </td>
           <td>{item.surname}</td>
           <td>{item.position}</td>
-          <td className="status-column">
-            <i
-              className={`fa fa-circle ${
-                !item.enddate ? "employeeactive" : "employeeinactive"
-              }`}
-            ></i>
-          </td>
           <td>
-            {!item.enddate && (
-              <a
+            <a
                 className="table-actions"
-                title="Set the employee as inactive?"
-                style={{ cursor: "pointer" }}
-                onClick={this.setEmployeeAsInactive.bind(this, item.rowNumber)}
-              >
-                <XCircle size="18" />
-              </a>
-            )}
-            {item.enddate && (
-              <a
-                className="table-actions"
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer", marginRight:10 }}
                 title="Set the employee as active, again?"
                 onClick={this.setEmployeeAsActive.bind(this, item.rowNumber)}
               >
-                <CheckCircle size="18" color="lime" />
+                <Eye size="18" color="blue" />
               </a>
-            )}
+              <a
+                className="table-actions"
+                style={{ cursor: "pointer", marginRight:10 }}
+                title="Set the employee as active, again?"
+                onClick={this.setEmployeeAsActive.bind(this, item.rowNumber)}
+              >
+                <Edit size="18" color="lime" />
+              </a>
+              <a
+                className="table-actions"
+                title="Set the employee as inactive?"
+                style={{ cursor: "pointer", marginRight:10 }}
+                onClick={this.setEmployeeAsInactive.bind(this, item)}
+              >
+                <XCircle size="18" />
+              </a>
           </td>
         </tr>
       );
@@ -91,8 +89,7 @@ class EmployeesTable extends Component {
               <th>Name</th>
               <th>Surname</th>
               <th>Position</th>
-              <th className="status-column">Status</th>
-              <th></th>
+              <th className="status-column">action</th>
             </tr>
           </thead>
           <tbody>{listEmployees}</tbody>
