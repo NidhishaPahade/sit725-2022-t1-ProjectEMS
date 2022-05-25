@@ -2,8 +2,6 @@ import initialState from "../initial/initialState";
 import * as actionTypes from "../actionTypes/actionTypes";
 
 const employeeReducer = (state = initialState.employees, action) => {
-  console.log(action,"actionactionaction")
-
   switch (action.type) {
     case actionTypes.GET_EMPLOYEES:
       return Object.assign([], action.data);

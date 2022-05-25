@@ -19,8 +19,8 @@ app.use(morgan('dev'));
 app.use('/api', LEAVE);
 app.use('/employee', Employee);
 
-const database = 'mongodb://localhost:27017/levemanagementdb';
-
+// const database = 'mongodb://localhost:27017/levemanagementdb';
+const database = 'mongodb+srv://manpreet:manpreet@cluster0.7lpjblq.mongodb.net/?retryWrites=true&w=majority'
 
 mongoose.connect((database), {
     useUnifiedTopology: true,
