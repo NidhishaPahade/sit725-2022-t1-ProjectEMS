@@ -210,103 +210,105 @@ class Home extends Component {
 
     return (
       <div className="container">
-        
-          <div className="row">
-            <div className="col-md-4">
-              <div className="portlet portlet-boxed">
-                <div className="portlet-header">
-                  <h4 className="portlet-title">Enter multiple Attendence</h4>
-                </div>
-                <form className="portlet-body" onSubmit={this.addPenalty}>
-                  <div className="form-group">
-                    <label htmlFor="exampleInputEmail1">Employee</label>
-                    <Select
-                      name="employee"
-                      value={penaltyForm.employee}
-                      onChange={this.handleEmployeeChange}
-                      options={employeesFormated}
-                      required
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="exampleInputPassword1">Attendence</label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      id="penaltyValue"
-                      placeholder="Enter Amount"
-                      name="amount"
-                      onChange={this.handleValueChange}
-                      value={penaltyForm.amount}
-                      required
-                    />
-                  </div>
-                 
-                  <div className="form-group">
-                    <label htmlFor="description">Description</label>
-                    <textarea
-                      type="number"
-                      className="form-control"
-                      id="penaltyDescription"
-                      placeholder="Enter Description"
-                      name="description"
-                      onChange={this.handleValueChange}
-                      value={penaltyForm.description}
-                      required
-                    />
-                  </div>
-                  <button type="submit" className="btn btn-primary">
-                    Add Attendence
-                  </button>
-                </form>
-              </div>
-            </div>
-            <div className="col-md-8">
-              <div className="portlet portlet-boxed">
-                <div className="portlet-header">
-                  <h4 className="portlet-title">Add new Attendence overview</h4>
-                </div>
-                {this.state.penalties.length === 0 && (
-                  <div className="portlet-body no-penalties__wrapper">
-                    <img
-                      src={noPenaltiesIl}
-                      alt="Missing data illustration"
-                      className="no-data__image"
-                    />
-                    <p className="no-data">
-                      There are no Attendence added at the moment! <br />
-                      You can add them by filling out te form on the left.
-                    </p>
-                  </div>
-                )}
-                {this.state.penalties.length > 0 && (
-                  <div className="portlet-body penalties__wrapper">
-                    <table className="table table-striped">
-                      <thead>
-                        <tr>
-                          <th>Name</th>
-                          <th>Date</th>
-                          <th>Amount</th>
-                          <th>Description</th>
-                          <th />
-                        </tr>
-                      </thead>
-                      <tbody>{penaltiesList}</tbody>
-                    </table>
 
-                    <button
-                      type="submit"
-                      className="btn btn-primary"
-                      onClick={this.save}
-                    >
-                      Save all penalties
-                    </button>
-                  </div>
-                )}
+        <div className="row">
+          <div className="col-md-4">
+            <div className="portlet portlet-boxed">
+              <div className="portlet-header">
+                <h4 className="portlet-title">Enter Employee Attendance</h4>
               </div>
+              <form className="portlet-body" onSubmit={this.addPenalty}>
+                <div className="form-group">
+                  <label htmlFor="exampleInputEmail1">Employee</label>
+                  <Select
+                    name="employee"
+                    value={penaltyForm.employee}
+                    onChange={this.handleEmployeeChange}
+                    options={employeesFormated}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="exampleInputPassword1">Attendance</label>
+                  <Select
+                    name="employee"
+                    value={penaltyForm.employee}
+                    onChange={this.handleEmployeeChange}
+                    options={
+                      [
+                        { value: 'present', label: 'Present' },
+                        { value: 'absent', label: 'Absent' },
+                        { value: 'leave', label: 'Leave' }
+                      ]}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="description">Description</label>
+                  <textarea
+                    type="number"
+                    className="form-control"
+                    id="penaltyDescription"
+                    placeholder="Enter Description"
+                    name="description"
+                    onChange={this.handleValueChange}
+                    value={penaltyForm.description}
+                    required
+                  />
+                </div>
+                <button type="submit" className="btn btn-primary">
+                  Add Attendence
+                </button>
+              </form>
             </div>
           </div>
-        
+          <div className="col-md-8">
+            <div className="portlet portlet-boxed">
+              <div className="portlet-header">
+                <h4 className="portlet-title">Add new Attendence overview</h4>
+              </div>
+              {this.state.penalties.length === 0 && (
+                <div className="portlet-body no-penalties__wrapper">
+                  <img
+                    src={noPenaltiesIl}
+                    alt="Missing data illustration"
+                    className="no-data__image"
+                  />
+                  <p className="no-data">
+                    There are no Attendence added at the moment! <br />
+                    You can add them by filling out te form on the left.
+                  </p>
+                </div>
+              )}
+              {this.state.penalties.length > 0 && (
+                <div className="portlet-body penalties__wrapper">
+                  <table className="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Description</th>
+                        <th />
+                      </tr>
+                    </thead>
+                    <tbody>{penaltiesList}</tbody>
+                  </table>
+
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    onClick={this.save}
+                  >
+                    Save all penalties
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
 
         <ToastContainer autoClose={3000} closeOnClick />
       </div>

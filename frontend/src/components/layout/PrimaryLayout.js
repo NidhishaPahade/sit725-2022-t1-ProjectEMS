@@ -70,9 +70,9 @@ class PrimaryLayout extends Component {
                   <li className={currentRoute === "/leave" ? "active" : ""}>
                     <Link to="/leave"> Leaves </Link>
                   </li>
-                  <li className={currentRoute === "/profile" ? "active" : ""}>
+                  {/* <li className={currentRoute === "/profile" ? "active" : ""}>
                     <Link to="/profile"> Profile </Link>
-                  </li>
+                  </li> */}
                 </ul>
                 <Link
                   to="/login"
