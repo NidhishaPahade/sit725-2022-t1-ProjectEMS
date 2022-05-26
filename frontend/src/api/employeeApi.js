@@ -11,6 +11,21 @@ class EmployeeApi {
     });
   }
 
+  static updateEmployee(employee, id) {
+    return axios({
+      method: "post",
+      url: employeeApiUrl + "updateEmployee/" + id,
+      data: {
+        employee,
+      },
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+  }
+
+  
+
   static getEmployee(value) {
     return axios({
       method: "get",

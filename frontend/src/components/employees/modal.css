@@ -1,0 +1,18 @@
+
+
+.modalMain{
+    padding: 20px 40px;
+    width: 700px;
+}
+
+.itemOut{
+    padding: 10px 5px;
+    justify-content: space-between;
+    display: flex;
+    border-bottom: 1px solid rgb(186, 186, 186);
+}
+
+.itemOut h4{
+    font-size: 16px;
+    font-weight: 300;
+}

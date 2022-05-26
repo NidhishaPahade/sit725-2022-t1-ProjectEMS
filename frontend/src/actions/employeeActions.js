@@ -58,6 +58,24 @@ export const addEmployeeAsync = (e, index) => {
   };
 };
 
+export const updateEmployeeAsync = (data, id) => {
+  return async dispatch => {
+    try {
+      const employees = await EmployeeApi.updateEmployee(data, id);
+      // dispatch(addEmployee(employees.data));
+      if(employees){
+        const employeesGet = await EmployeeApi.getEmployees();
+          dispatch(getEmployees(employeesGet.data));
+      }
+    } catch (error) {
+      console.log("error while adding new employee", error);
+      throw error;
+    }
+  };
+};
+
+
+
 export const removeEmployeeAsync = (row, id) => {
   return async dispatch => {
     try {

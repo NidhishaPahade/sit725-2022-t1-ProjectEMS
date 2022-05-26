@@ -6825,3 +6825,7 @@ div.rodal-dialog
 div.rodal-zoom-enter {
   width: fit-content !important;
 }
+
+.datePickerCustom input{
+  pointer-events: none;
+}
