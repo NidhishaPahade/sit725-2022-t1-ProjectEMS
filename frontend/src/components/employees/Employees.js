@@ -4,15 +4,25 @@ import EmployeesTable from "./EmployeesTable";
 import AddEmployeeRightPanel from "./AddEmployeeRightPanel";
 
 class Employees extends Component {
+  constructor() {
+    super()
+    this.state = {
+      editData: ''
+    }
+  }
 
   render() {
-    const { employees, addEmployee, removeEmployee } = this.props;
+    const { employees, addEmployee, updateEmployee ,removeEmployee } = this.props;
+    let { editData } = this.state
     return (
       <div className="container">
         <div className="row">
           <AddEmployeeRightPanel
             addEmployee={addEmployee}
+            updateEmployee={updateEmployee}
             employees={employees}
+            editData={editData}
+            clearUpdate={() => this.setState({ editData :'' })}
           />
           <div className="col-md-8">
             <div className="portlet portlet-boxed">
@@ -22,6 +32,7 @@ class Employees extends Component {
               <EmployeesTable
                 employees={employees}
                 removeEmployee={removeEmployee}
+                setEmployeeEdit={(data) => this.setState({editData : data})}
               />
             </div>
           </div>

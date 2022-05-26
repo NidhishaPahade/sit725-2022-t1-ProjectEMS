@@ -21,7 +21,18 @@ class AddEmployeeRightPanel extends React.Component {
         this.props.addEmployee(formData);
     }
 
+    updateEmployee = (values, id) => {
+        let formData = Object.assign({}, values);
+        formData.isPayoneer = formData.isPayoneer || false;
+        if (formData.birthdate !== undefined && formData.startdate !== undefined) {
+            formData.birthdate = moment(formData.birthdate).format('MM-DD-YYYY');
+            formData.startdate = moment(formData.startdate).format('MM-DD-YYYY');
+        }
+        this.props.updateEmployee(formData, id);
+    }
+
     render() {
+        let { editData, clearUpdate } = this.props
         return (
             <div className="col-md-4">
                 <div className="portlet portlet-boxed">
@@ -33,7 +44,7 @@ class AddEmployeeRightPanel extends React.Component {
                     <div className="portlet-body">
                         <div id="settings-content" className="stacked-content">
                             <div className="tab-pane fade in active" id="profile-tab">
-                                <AddEmployeeForm addEmployee={this.addEmployee}/>
+                                <AddEmployeeForm clearUpdate={clearUpdate} updateEmployee={this.updateEmployee} addEmployee={this.addEmployee} editData={editData}/>
                             </div>
                         </div>
                     </div>
@@ -45,7 +56,8 @@ class AddEmployeeRightPanel extends React.Component {
 
 AddEmployeeRightPanel.propTypes = {
     employees: PropTypes.array.isRequired,
-    addEmployee: PropTypes.func
+    addEmployee: PropTypes.func,
+    updateEmployee:  PropTypes.func,
 };
 
 export default AddEmployeeRightPanel;
