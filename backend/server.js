@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const mongoose = require("mongoose")
 const LEAVE = require("./leave/leave.route");
 const Employee = require("./employee/employee.route");
+const Attendance = require("./attendance/attendance.route");
 
 app.use(cors({
     origin: '*',
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use('/api', LEAVE);
 app.use('/employee', Employee);
+app.use('/attendance', Attendance);
 
 // const database = 'mongodb://localhost:27017/levemanagementdb';
 const database = 'mongodb+srv://manpreet:manpreet@cluster0.7lpjblq.mongodb.net/?retryWrites=true&w=majority'
