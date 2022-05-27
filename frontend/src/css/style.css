@@ -1933,6 +1933,13 @@ fieldset[disabled] .btn-transparent.focus {
   color: #d74b4b;
 }
 
+.flex{
+  display: flex;
+}
+.item-center{
+  align-items: center;
+
+}
 .list-group > .list-group-item {
   background-color: #ffffff;
   display: -ms-flexbox;

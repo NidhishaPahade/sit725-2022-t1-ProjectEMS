@@ -33,11 +33,9 @@ class EmployeesTable extends Component {
     const { employees, setEmployeeEdit } = this.props;
     const newOrder = employees && employees.data && employees.data.length ? employees.data : []
     const { employeeDetails } = this.state
-    const sortedEmployees = _.orderBy(
-      newOrder,
-      ["enddate", "name"],
-      ["desc", "asc"]
-    );
+ 
+    let sortedEmployees  = newOrder || []
+    sortedEmployees.length ? sortedEmployees  =  sortedEmployees.sort((a, b) => a.name.localeCompare(b.name)) : []
 
     const listEmployees = sortedEmployees.map(item => {
       return (

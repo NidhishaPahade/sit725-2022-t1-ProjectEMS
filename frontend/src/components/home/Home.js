@@ -1,212 +1,144 @@
 import React, { Component } from "react";
-import SpreadSheetApi from "../../api/spreadsheetApi";
-import { confirmAlert } from "react-confirm-alert";
-import { XCircle } from "react-feather";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as employeeActions from '../../actions/employeeActions';
 import Select from "react-select";
 import moment from "moment/moment";
-import PenaltyApi from "../../api/penaltyApi";
 import noPenaltiesIl from "../../img/no-penalties-illustration.png";
 import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
+import ReactLoading from "react-loading";
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      code: "",
-      penaltyForm: {
-        employee: "",
-        amount: "",
-        unit: "",
-        description: ""
+      attendanceForm: {
+        reason: "",
+        employeeID: '',
+        attendanceStatus: 'Present',
       },
-      penalties: []
+      attendaceList: [],
+      isLoading: true
     };
   }
 
-  success = () =>
-    toast.info("Penalties successfully saved", { autoClose: 2000 });
-
-  openModalToAllowAppUsingSpreadsheetAPI = url => {
-    confirmAlert({
-      title: "Confirm",
-      message:
-        "Looks like your app is using Google Spreadsheet API. In order to use it, you have to give an access it to your email for the first time",
-      confirmLabel: "Confirm",
-      cancelLabel: "Cancel",
-      onConfirm: () => (window.location.href = url)
-    });
-  };
-
-  componentWillReceiveProps(nextProps) {
-    let response;
-    if (!nextProps.isAppGoogleSpreadsheetAuthenticated) {
-      SpreadSheetApi.getToken().then(res => {
-        response = res.data;
-        this.openModalToAllowAppUsingSpreadsheetAPI(response);
-      });
-    }
+  componentDidMount() {
+   this.getAllData()
   }
 
-  // After the API code gets verified, the user gets redirected to the Home component and additionally,
-  //  the app fires off 3 action creators  => To get the employees, reports, and loans-related data.
-  verifyCode = e => {
-    e.preventDefault();
-    const { code } = this.state;
-    SpreadSheetApi.verifyCode(code)
-      .then(res => {
-        this.props.setGoogleSpreadsheetAuth();
-        this.props.getEmployeesAsync();
-        this.props.getReportsAsync();
-        this.props.getLoansAsync();
+  getAllData = () => {
+    this.setState({ 
+      isLoading: true
+    })
+    this.props.actions.getEmployeesAsync();
+    let today = moment(new Date()).format('MM-DD-YYYY')
+    axios.get(`http://localhost:3001/attendance/get/${today}/${today}`).then(res => {
+      console.log(res.data.data)
+      this.setState({ 
+        attendaceList : res.data.data || [],
+        isLoading: false
       })
-      .catch(err => {
-        alert("Code is invalid");
-        this.props.unsetGoogleSpreadsheetAuth();
-      });
-  };
+    }).catch(err => {
+      this.setState({ 
+        isLoading: false
+      })
+    })
+  }
 
-  handleInputChange = event => {
-    this.setState({ code: event.target.value });
-  };
-
-  handleEmployeeChange = selectedOption => {
-    const selectedValue = selectedOption ? selectedOption : null;
-
-    this.setState(prevState => ({
-      penaltyForm: {
-        ...prevState.penaltyForm,
-        employee: selectedValue
+  handleInputChangeAttendance = selectedValue => {
+    let { attendanceForm } = this.state;
+    this.setState({
+      attendanceForm: {
+        ...attendanceForm,
+        attendanceStatus: selectedValue.value
       }
-    }));
+    })
   };
 
-  handleUnitChange = selectedOption => {
-    const selectetedValue = selectedOption ? selectedOption.value : "";
-    this.setState(prevState => ({
-      penaltyForm: {
-        ...prevState.penaltyForm,
-        unit: selectetedValue
+  handleEmployeeChange = selectedValue => {
+    let { attendanceForm } = this.state;
+    this.setState({
+      attendanceForm: {
+        ...attendanceForm,
+        employeeID: selectedValue.value
       }
-    }));
+    })
   };
 
   handleValueChange = event => {
-    event.preventDefault();
-    let penaltyForm = this.state.penaltyForm;
-    let { name, value } = event.target;
-    penaltyForm[name] = value;
-    if (name && value) {
-      this.setState({ penaltyForm });
-    }
-  };
-
-  addPenalty = event => {
-    event.preventDefault();
-    let penalty = {
-      amount: this.state.penaltyForm.amount,
-      unit: this.state.penaltyForm.unit,
-      date: new Date(),
-      description: this.state.penaltyForm.description,
-      employee: this.state.penaltyForm.employee.value
-    };
-    if (this.state.penaltyForm.employee.value) {
-      this.setState(prevState => ({
-        penalties: [...prevState.penalties, penalty]
-      }));
-    }
-  };
-
-  save = () => {
-    let penaltiesData = Object.assign([], this.state.penalties);
-    penaltiesData.map(penal => {
-      penal.employeeJMBG = penal.employee.jmbg;
-      delete penal.employee;
-
-      return penaltiesData;
-    });
-    this.saveBulkEmployees(penaltiesData);
-  };
-
-  saveBulkEmployees = data => {
-    PenaltyApi.addBulk(data)
-      .then(response => {
-        this.success();
-        console.log(response.config.data);
-        this.resetFormAndPenaltiesList();
-      })
-      .catch(error => {
-        console.log("error while adding multiple penalties", error);
-        throw error;
-      });
-  };
-
-  resetFormAndPenaltiesList = () => {
-    const penaltyForm = {
-      employee: null,
-      amount: "",
-      unit: "",
-      description: ""
-    };
-    const penalties = [];
+    let { attendanceForm } = this.state;
+    let { value } = event.target;
     this.setState({
-      penaltyForm,
-      penalties
+      attendanceForm: {
+        ...attendanceForm,
+        reason: event.target.value
+      }
     });
   };
 
-  openDeleteConfirmModal = id => {
-    confirmAlert({
-      title: "Confirm",
-      message: "Are you sure you want to delete an item?",
-      confirmLabel: "Confirm",
-      cancelLabel: "Cancel",
-      onConfirm: () => this.deleteItem(id)
-    });
+  addAttendance = event => {
+    event.preventDefault();
+    let today = moment(new Date()).format('MM-DD-YYYY')
+    let { attendanceForm } = this.state;
+
+    axios.post(`http://localhost:3001/attendance/request` , {
+        "employeeID": attendanceForm.employeeID,
+        "attendanceDate": '05-24-2022',
+        "attendanceStatus": attendanceForm.attendanceStatus || 'Present',
+        "reason": attendanceForm.reason || ''
+    }).then(res => {
+      this.getAllData()
+      this.setState({
+        attendanceForm: {
+          reason: "",
+          employeeID: '',
+          attendanceStatus: 'Present',
+        },
+      })
+    }).catch(err => {
+    })
   };
 
-  deleteItem = id => {
-    this.setState(prevState => ({
-      penalties: prevState.penalties.filter(item => item.employee.jmbg !== id)
-    }));
-  };
-
-  render() {
-    const { penaltyForm } = this.state;
-
-    const employeesFormated = this.props.employees
-      .filter(item => item.enddate === undefined)
-      .map(emp => {
-        return {
-          value: emp,
-          label: `${emp.name} ${emp.surname}`
-        };
-      });
-
-    const penaltiesList = this.state.penalties.map(item => {
+  employeListMain = () => {
+    let array  = this.state.attendaceList || []
+    array.length ? array  =  array.sort((a, b) => a.name.localeCompare(b.name)) : []
+    return (array || []).map(item => {
       return (
-        <tr key={item.date.toString()}>
-          <td className="col-md-4">
-            {item.employee.name} {item.employee.surname}
+        <tr>
+          <td className="col-md-3">
+            {item.name}
           </td>
-          <td className="col-md-3">{moment(item.date).format("MM-DD-YYYY")}</td>
-          <td className="col-md-2">
-            {item.amount} {item.unit}
+          <td className="col-md-3">
+            {item.attendance[0].attendanceStatus}
           </td>
-          <td className="col-md-3">{item.description}</td>
-          <td>
-            <a
-              onClick={this.openDeleteConfirmModal.bind(
-                this,
-                item.employee.jmbg
-              )}
-            >
-              <XCircle size="18" />
-            </a>
+          <td className="col-md-6">
+            {item.attendance[0].reason || '--'}
           </td>
         </tr>
       );
+    })
+  }
+
+  render() {
+    const { attendanceForm } = this.state;
+
+    const employeesFormated = (this.props.employees.data || []).map(emp => {
+      return {
+        value: emp._id,
+        label: `${emp.name} ${emp.surname}`
+      };
     });
+
+    if (this.state.isLoading) {
+      // if doing asyng things
+      return (
+        <div className="flexCenter">
+          <ReactLoading type={"bars"} color={"pink"} />
+        </div>
+      );
+    } // rende
 
     return (
       <div className="container">
@@ -217,12 +149,12 @@ class Home extends Component {
               <div className="portlet-header">
                 <h4 className="portlet-title">Enter Employee Attendance</h4>
               </div>
-              <form className="portlet-body" onSubmit={this.addPenalty}>
+              <form className="portlet-body">
                 <div className="form-group">
                   <label htmlFor="exampleInputEmail1">Employee</label>
                   <Select
                     name="employee"
-                    value={penaltyForm.employee}
+                    value={attendanceForm.employeeID}
                     onChange={this.handleEmployeeChange}
                     options={employeesFormated}
                     required
@@ -232,32 +164,32 @@ class Home extends Component {
                   <label htmlFor="exampleInputPassword1">Attendance</label>
                   <Select
                     name="employee"
-                    value={penaltyForm.employee}
-                    onChange={this.handleEmployeeChange}
+                    value={attendanceForm.attendanceStatus}
+                    onChange={this.handleInputChangeAttendance}
                     options={
                       [
-                        { value: 'present', label: 'Present' },
-                        { value: 'absent', label: 'Absent' },
-                        { value: 'leave', label: 'Leave' }
+                        { value: 'Present', label: 'Present' },
+                        { value: 'Absent', label: 'Absent' },
+                        { value: 'Leave', label: 'Leave' }
                       ]}
                     required
                   />
                 </div>
 
-                <div className="form-group">
-                  <label htmlFor="description">Description</label>
-                  <textarea
-                    type="number"
+                {attendanceForm.attendanceStatus === 'Leave' && <div className="form-group">
+                  <label htmlFor="description">Leave Reason</label>
+                  <input
+                    type="text"
                     className="form-control"
                     id="penaltyDescription"
-                    placeholder="Enter Description"
-                    name="description"
-                    onChange={this.handleValueChange}
-                    value={penaltyForm.description}
+                    placeholder="Enter Leave Reason"
+                    name="reason"
+                    onChange={(e) => this.handleValueChange(e)}
+                    value={attendanceForm.reason}
                     required
                   />
-                </div>
-                <button type="submit" className="btn btn-primary">
+                </div>}
+                <button onClick={(e) => this.addAttendance(e)} type="submit" className="btn btn-primary">
                   Add Attendence
                 </button>
               </form>
@@ -266,9 +198,9 @@ class Home extends Component {
           <div className="col-md-8">
             <div className="portlet portlet-boxed">
               <div className="portlet-header">
-                <h4 className="portlet-title">Add new Attendence overview</h4>
+                <h4 className="portlet-title">Attendance For Today</h4>
               </div>
-              {this.state.penalties.length === 0 && (
+              {this.state.attendaceList.length === 0 && (
                 <div className="portlet-body no-penalties__wrapper">
                   <img
                     src={noPenaltiesIl}
@@ -281,28 +213,19 @@ class Home extends Component {
                   </p>
                 </div>
               )}
-              {this.state.penalties.length > 0 && (
+              {this.state.attendaceList.length > 0 && (
                 <div className="portlet-body penalties__wrapper">
                   <table className="table table-striped">
                     <thead>
                       <tr>
                         <th>Name</th>
-                        <th>Date</th>
-                        <th>Amount</th>
-                        <th>Description</th>
-                        <th />
+                        <th>Today Status</th>
+                        <th>Reason</th>
+                        {/* <th>Description</th> */}
                       </tr>
                     </thead>
-                    <tbody>{penaltiesList}</tbody>
+                    <tbody>{this.employeListMain()}</tbody>
                   </table>
-
-                  <button
-                    type="submit"
-                    className="btn btn-primary"
-                    onClick={this.save}
-                  >
-                    Save all penalties
-                  </button>
                 </div>
               )}
             </div>
@@ -322,7 +245,23 @@ Home.propTypes = {
   reports: PropTypes.object,
   loans: PropTypes.object,
   setGoogleSpreadsheetAuth: PropTypes.func.isRequired,
-  unsetGoogleSpreadsheetAuth: PropTypes.func.isRequired
+  unsetGoogleSpreadsheetAuth: PropTypes.func.isRequired,
+  actions: PropTypes.object.isRequired,
+  updateEmployee: PropTypes.func,
 };
 
-export default Home;
+
+const mapStateToProps = (state) => {
+  return {
+    employees: state.employees
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators(employeeActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
+

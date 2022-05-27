@@ -21,18 +21,18 @@ export const unsetGoogleSpreadsheetAuth = data => {
 export const checkIfAppIsGoogleSpreadsheetAuthenticated = () => {
   return async dispatch => {
     try {
-      const res = await SpreadSheetApi.getToken();
-      if (res.data.credentials !== undefined) {
-        dispatch(setGoogleSpreadsheetAuth(res.data));
-        dispatch(getEmployeesAsync());
-        dispatch(getReportsAsync());
-        dispatch(getLoansAsync());
-      } else {
-        dispatch(unsetGoogleSpreadsheetAuth(res.data));
-      }
+      // const res = await SpreadSheetApi.getToken();
+      // if (res.data.credentials !== undefined) {
+      //   dispatch(setGoogleSpreadsheetAuth(res.data));
+      //   dispatch(getEmployeesAsync());
+      //   dispatch(getReportsAsync());
+      //   dispatch(getLoansAsync());
+      // } else {
+      //   dispatch(unsetGoogleSpreadsheetAuth(res.data));
+      // }
     } catch (error) {
-      console.log("error while loading data", error);
-      throw error;
+      // console.log("error while loading data", error);
+      // throw error;
     }
   };
 };
