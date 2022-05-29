@@ -25,23 +25,23 @@ class Home extends Component {
   }
 
   componentDidMount() {
-   this.getAllData()
+    this.getAllData()
   }
 
   getAllData = () => {
-    this.setState({ 
+    this.setState({
       isLoading: true
     })
     this.props.actions.getEmployeesAsync();
     let today = moment(new Date()).format('MM-DD-YYYY')
     axios.get(`http://localhost:3001/attendance/get/${today}/${today}`).then(res => {
       console.log(res.data.data)
-      this.setState({ 
-        attendaceList : res.data.data || [],
+      this.setState({
+        attendaceList: res.data.data || [],
         isLoading: false
       })
     }).catch(err => {
-      this.setState({ 
+      this.setState({
         isLoading: false
       })
     })
@@ -83,27 +83,33 @@ class Home extends Component {
     let today = moment(new Date()).format('MM-DD-YYYY')
     let { attendanceForm } = this.state;
 
-    axios.post(`http://localhost:3001/attendance/request` , {
+    if (attendanceForm.employeeID) {
+      axios.post(`http://localhost:3001/attendance/request`, {
         "employeeID": attendanceForm.employeeID,
-        "attendanceDate": '05-24-2022',
+        "attendanceDate": today,
         "attendanceStatus": attendanceForm.attendanceStatus || 'Present',
         "reason": attendanceForm.reason || ''
-    }).then(res => {
-      this.getAllData()
-      this.setState({
-        attendanceForm: {
-          reason: "",
-          employeeID: '',
-          attendanceStatus: 'Present',
-        },
+      }).then(res => {
+        this.getAllData()
+        this.setState({
+          attendanceForm: {
+            reason: "",
+            employeeID: '',
+            attendanceStatus: 'Present',
+          },
+        })
+      }).catch(err => {
       })
-    }).catch(err => {
-    })
+    } else {
+      toast.error('Please select employee first', { autoClose: 2000 });
+    }
+
+
   };
 
   employeListMain = () => {
-    let array  = this.state.attendaceList || []
-    array.length ? array  =  array.sort((a, b) => a.name.localeCompare(b.name)) : []
+    let array = this.state.attendaceList || []
+    array.length ? array = array.sort((a, b) => a.name.localeCompare(b.name)) : []
     return (array || []).map(item => {
       return (
         <tr>

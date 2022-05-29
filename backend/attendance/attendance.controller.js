@@ -3,6 +3,7 @@ const Employee = require("../employee/employee.model");
 
 const _ = require("underscore");
 const vm = require("v-response");
+var ObjectId = require('mongoose').Types.ObjectId;
 
 //request  Attendance
 exports.requestAttendance = async (req, res, next) => {
@@ -15,6 +16,14 @@ exports.requestAttendance = async (req, res, next) => {
         const attendanceDate = new Date(req.body.attendanceDate);
         // Add some days to date
         req.body.attendanceDate = addDays(attendanceDate, 1);
+
+        let attendance = await checkAttendanceIfExists(req.body)
+        if(attendance){
+            await attendance.update(req.body)
+            attendance = await checkAttendanceIfExists(req.body)
+            return res.status(201)
+                .json(vm.ApiResponse(true, 200, `Attendance updated successfully`, attendance)); 
+        }
 
         const createAttendanceObject = await new Attendance(req.body);
         const createAttendance = await createAttendanceObject.save();
@@ -43,7 +52,7 @@ exports.getAttendance = async (req, res, next) => {
         let end = new Date(req.params.endDate)
         start = addDays(start, 1);
         end = addDays(end, 1);
-        
+
         let matchParams = { attendanceDate: { $gte: new Date(start), $lte: new Date(end) } }
         if(req.query.status)
             matchParams = { attendanceStatus: req.query.status,
@@ -76,6 +85,15 @@ exports.getAttendance = async (req, res, next) => {
 
 };
 
+async function checkAttendanceIfExists(data){
+    let retrieveAttendance = await Attendance.findOne({
+                                    employeeID: data.employeeID,
+                                    attendanceDate: data.attendanceDate
+                                });
+    return retrieveAttendance
+}
+
+
 async function getAttendanceWithEmployee(findAttendance){
 
     await Promise.all(
@@ -100,6 +118,3 @@ async function getAttendanceWithEmployee(findAttendance){
 function addDays(dateTime, count_days = 0){
   return new Date(new Date(dateTime).setDate(dateTime.getDate() + count_days));
 }
-
-
-
