@@ -40,8 +40,8 @@ class EmployeesTable extends Component {
     const listEmployees = sortedEmployees.map(item => {
       return (
         <tr key={item.jmbg}>
-          <td>
-            <Link to={`/employees/${item.jmbg}`}> {item.name} </Link>{" "}
+          <td  onClick={() => this.setState({ showModal: true, employeeDetails: item })}>
+           {item.name}
           </td>
           <td>{item.surname}</td>
           <td>{item.position}</td>
@@ -112,7 +112,7 @@ class EmployeesTable extends Component {
             </div>
             <div className="itemOut">
               <h4>
-                JMBG :
+                Phone Number :
               </h4>
               <h4>
                 {employeeDetails.jmbg}

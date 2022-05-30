@@ -11,6 +11,7 @@ import GenerateSalariesContainerComponent from "../../containers/GenerateSalarie
 import AttendanceDetailsContainerComponent from "../../containers/AttendanceDetailsContainerComponent";
 import EmployeeStatsContainerComponent from "../../containers/EmployeeStatsContainerComponent";
 import Profile from "../profile/Profile";
+import LeaveContainer from "../../containers/LeaveContainer";
 
 class PrimaryLayout extends Component {
   constructor(props) {
@@ -107,6 +108,12 @@ class PrimaryLayout extends Component {
               path="/attendance"
               component={AttendanceContainerComponent}
             />
+            <Route
+              exact
+              path="/leave"
+              component={LeaveContainer}
+            />
+
             <Route
               exact
               path="/attendance/details"

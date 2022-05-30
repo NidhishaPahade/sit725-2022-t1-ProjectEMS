@@ -1939,7 +1939,18 @@ fieldset[disabled] .btn-transparent.focus {
 .item-center{
   align-items: center;
 
+  
 }
+input[type="number"]::-webkit-outer-spin-button, 
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+
 .list-group > .list-group-item {
   background-color: #ffffff;
   display: -ms-flexbox;

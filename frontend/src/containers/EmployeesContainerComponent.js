@@ -8,7 +8,7 @@ import Employees from "../components/employees/Employees";
 class EmployeesContainerComponent extends React.Component {
 
     componentDidMount(){
-        this.props.actions.getEmployeesAsync();
+        this.props.actions.getEmployeesAsync()
       }
 
     render() {

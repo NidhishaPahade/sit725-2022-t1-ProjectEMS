@@ -5,7 +5,7 @@ import ReactHTMLTableToExcel from "react-html-table-to-excel";
 const SalariesTable = ({ employeesSalaries }) => {
   const employeesDataList = employeesSalaries.map(item => {
     return (
-      <tr key={item.jmbg}>
+      <tr key={item._id}>
         <td className="salaries-table__decoration">{item.name}</td>
         <td>{item.totalNetSalary}</td>
         <td className="salaries-table__decoration">{item.totalGrossSalary}</td>

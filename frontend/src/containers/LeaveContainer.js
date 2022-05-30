@@ -10,14 +10,16 @@ import axios from 'axios'
 import noPenaltiesIl from "../img/no-penalties-illustration.png";
 
 import _ from "lodash";
+import { ToastContainer, toast } from "react-toastify";
 
-class AttendanceContainerComponent extends Component {
+class LeaveContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
       attendaceList: [],
-      selectedDate: new Date()
+      endDate: new Date(),
+      startDate: new Date(),
     };
   }
 
@@ -26,9 +28,16 @@ class AttendanceContainerComponent extends Component {
   }
 
   getAllData = () => {
-    let { selectedDate } = this.state
-    let today = moment(new Date(selectedDate)).format('MM-DD-YYYY')
-    axios.get(`http://localhost:3001/attendance/get/${today}/${today}`).then(res => {
+    let { startDate, endDate } = this.state
+    let start = moment(new Date(startDate)).format('MM-DD-YYYY')
+    let end = moment(new Date(endDate)).format('MM-DD-YYYY')
+
+    if (startDate > endDate) {
+      toast.error('Start date shoulen`t be greater then End date', { autoClose: 2000 });
+      return
+    }
+   
+    axios.get(`http://localhost:3001/attendance/get/${start}/${end}?status=Leave`).then(res => {
       console.log(res.data.data)
       this.setState({
         attendaceList: res.data.data || [],
@@ -50,9 +59,9 @@ class AttendanceContainerComponent extends Component {
           <td className="col-md-3">
             {item.name}
           </td>
-          <td className="col-md-3">
+          {/* <td className="col-md-3">
             {item.attendance[0].attendanceStatus}
-          </td>
+          </td> */}
           <td className="col-md-6">
             {item.attendance[0].reason || '--'}
           </td>
@@ -61,12 +70,18 @@ class AttendanceContainerComponent extends Component {
     })
   }
 
-  hanldeChangeFilter = (e) => {
-    this.setState({ selectedDate: e })
+  hanldeChangeFilter = (key , e) => {
+    if(key === 'start'){
+      this.setState({ startDate: e })
+
+    }else{
+      this.setState({ endDate: e })
+
+    }
   }
 
   render() {
-    let { selectedDate } = this.state
+    let { startDate, endDate } = this.state
     if (this.state.isLoading) {
       // if doing asyng things
       return (
@@ -82,12 +97,24 @@ class AttendanceContainerComponent extends Component {
           <div className="col-md-3">
 
             <div className="form-group datePickerCustom">
-              <label htmlFor="startdate">Attendence Date *</label>
+              <label htmlFor="startdate">Start Date *</label>
               <DateTimePicker
-                onChange={(e) => this.hanldeChangeFilter(e)}
+                onChange={(e) => this.hanldeChangeFilter('start',e)}
                 format="DD MMM YYYY"
                 time={false}
-                value={selectedDate ? new Date(selectedDate) : new Date('01-01-2022')}
+                value={startDate ? new Date(startDate) : new Date('01-01-2022')}
+              />
+            </div>
+          </div>
+          <div className="col-md-3">
+
+            <div className="form-group datePickerCustom">
+              <label htmlFor="startdate">End Date *</label>
+              <DateTimePicker
+                onChange={(e) => this.hanldeChangeFilter('end',e)}
+                format="DD MMM YYYY"
+                time={false}
+                value={endDate ? new Date(endDate) : new Date('01-01-2022')}
               />
             </div>
           </div>
@@ -110,7 +137,7 @@ class AttendanceContainerComponent extends Component {
                   <thead>
                     <tr>
                       <th>Name</th>
-                      <th>Today Status</th>
+                      {/* <th>Today Status</th> */}
                       <th>Reason</th>
                       {/* <th>Description</th> */}
                     </tr>
@@ -130,6 +157,7 @@ class AttendanceContainerComponent extends Component {
             </div>}
           </div>
         </div>
+        <ToastContainer autoClose={3000} closeOnClick />
       </div>
     );
   }
@@ -147,11 +175,11 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-AttendanceContainerComponent.propTypes = {
+LeaveContainer.propTypes = {
   reports: PropTypes.object
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AttendanceContainerComponent);
+)(LeaveContainer);

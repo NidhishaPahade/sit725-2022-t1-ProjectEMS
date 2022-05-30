@@ -29,9 +29,9 @@ class EmployeesTableSalary extends Component {
 
     const listEmployees = sortedEmployees.map(item => {
       return (
-        <tr key={item.jmbg}>
+        <tr key={item._id}>
           <td>
-            <Link to={`/employees/${item.jmbg}`}> {item.name||''} {item.surname||''}</Link>{" "}
+            {item.name||''} {item.surname||''}{" "}
           </td>
           <td>{item.position || '--'}</td>
           <td>{item.salary ? `${item.salary} /-` : 'Not Added'}</td>

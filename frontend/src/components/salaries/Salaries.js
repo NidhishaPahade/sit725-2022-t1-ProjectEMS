@@ -81,10 +81,10 @@ class Salaries extends Component {
         >
           <div className="modalMain">
             <div className="form-group">
-              <label htmlFor="jmbg">Add Employee Salary *</label>
+              <label htmlFor="salarru">Add Employee Salary *</label>
               <input
                 onChange={(e) => this.setState({ salaryValue : e.target.value })}
-                name="jmbg"
+                name="salarru"
                 component="input"
                 type="number"
                 className="form-control"

@@ -130,13 +130,13 @@ const AddEmployeeForm1 = (props) => {
       </div>
 
       <div className="form-group">
-        <label htmlFor="jmbg">JMBG *</label>
+        <label htmlFor="jmbg">Phone Number *</label>
         <input
           onChange={(e) => handleChange('jmbg', e)}
           name="jmbg"
           component="input"
-          type="text"
-          className="form-control"
+          type="number"
+          className="form-control typeNumber"
           value={form.jmbg}
           required
         />
