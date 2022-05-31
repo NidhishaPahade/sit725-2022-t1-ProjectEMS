@@ -39,8 +39,22 @@ class LeaveContainer extends Component {
    
     axios.get(`http://localhost:3001/attendance/get/${start}/${end}?status=Leave`).then(res => {
       console.log(res.data.data)
+      let arr = []
+      if (res.data.data.length) {
+        res.data.data.forEach(element => {
+          element.attendance.forEach(val => {
+            arr.push({
+              name: element.name,
+              reason: val.reason,
+              attendanceDate: val.attendanceDate
+            })
+          })
+        });
+        this.setState({
+          attendaceList: arr || []
+        })
+      }
       this.setState({
-        attendaceList: res.data.data || [],
         isLoading: false
       })
     }).catch(err => {
@@ -52,18 +66,18 @@ class LeaveContainer extends Component {
 
   employeListMain = () => {
     let array  = this.state.attendaceList || []
-    array.length ? array  =  array.sort((a, b) => a.name.localeCompare(b.name)) : []
+    array.length ? array  =  array.sort((a, b) => a.attendanceDate.localeCompare(b.attendanceDate)) : []
     return (array || []).map(item => {
       return (
         <tr>
           <td className="col-md-3">
             {item.name}
           </td>
-          {/* <td className="col-md-3">
-            {item.attendance[0].attendanceStatus}
-          </td> */}
+          <td className="col-md-3">
+            {moment(item.attendanceDate).format('DD-MMM-YYYY')}
+          </td>
           <td className="col-md-6">
-            {item.attendance[0].reason || '--'}
+            {item.reason || '--'}
           </td>
         </tr>
       );
@@ -138,6 +152,7 @@ class LeaveContainer extends Component {
                     <tr>
                       <th>Name</th>
                       {/* <th>Today Status</th> */}
+                      <th>Leave Date</th>
                       <th>Reason</th>
                       {/* <th>Description</th> */}
                     </tr>
@@ -152,7 +167,7 @@ class LeaveContainer extends Component {
                 className="no-data__image"
               />
               <p className="no-data">
-                There are no Attendence added on this date! <br />
+                There are no Leave between these dates! <br />
               </p>
             </div>}
           </div>

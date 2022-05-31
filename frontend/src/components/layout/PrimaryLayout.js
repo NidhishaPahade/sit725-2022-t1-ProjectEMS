@@ -33,9 +33,13 @@ class PrimaryLayout extends Component {
   }
 
   componentWillMount() {
-    this.setState({
-      currentRoute: this.props.history.location.pathname
-    });
+    if (localStorage.getItem('token') !== null) {
+      this.setState({
+        currentRoute: this.props.history.location.pathname
+      });
+    }else{
+      this.props.history.push("/login");
+    }
   }
 
   render() {
