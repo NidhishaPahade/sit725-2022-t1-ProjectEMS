@@ -19,7 +19,7 @@ class Salaries extends Component {
   }
 
   componentDidMount() {
-    this.props.actions.getEmployeesAsync();
+    this.props.actions.getEmployeesAsync()
   }
 
   handleSubmitMain = () => {
