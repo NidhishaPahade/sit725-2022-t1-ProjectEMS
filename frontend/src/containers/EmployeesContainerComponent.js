@@ -16,7 +16,7 @@ class EmployeesContainerComponent extends React.Component {
     render() {
         return (
             <div>
-                <Employees employees={this.props.employees}
+                <Employees employees={[...this.props.employees]}
                     addEmployee={this.props.actions.addEmployeeAsync}
                     updateEmployee={this.props.actions.updateEmployeeAsync}
                     removeEmployee={this.props.actions.removeEmployeeAsync}

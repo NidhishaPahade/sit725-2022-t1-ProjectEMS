@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
-import Home from "../components/home/Home";
+import Home from "../components/home/Home.jsx";
 import * as googleSpreadsheetActions from "../actions/googleSpreadsheetActions";
 import * as employeeActions from "../actions/employeeActions";
 import * as reportsActions from "../actions/reportsActions";

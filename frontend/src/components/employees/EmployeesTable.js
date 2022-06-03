@@ -31,7 +31,7 @@ class EmployeesTable extends Component {
 
   render() {
     const { employees, setEmployeeEdit } = this.props;
-    const newOrder = employees && employees.data && employees.data.length ? employees.data : []
+    const newOrder = employees && employees && employees.length ? employees : []
     const { employeeDetails } = this.state
  
     let sortedEmployees  = newOrder || []

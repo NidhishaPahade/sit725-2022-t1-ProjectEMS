@@ -43,7 +43,7 @@ export const getEmployeesAsync = () => {
             //   data : resss.data
             // })
             // await dispatch(getEmployeesMain(resss.data));
-            res(resss.data)
+            res(resss.data.data)
           }
         })
       })
@@ -54,6 +54,8 @@ export const getEmployeesAsync = () => {
   };
 };
 
+
+
 export const addEmployeeAsync = (e, index) => {
   return async dispatch => {
     try {
@@ -61,7 +63,7 @@ export const addEmployeeAsync = (e, index) => {
       // dispatch(addEmployee(employees.data));
       if(employees){
         const employeesGet = await EmployeeApi.getEmployees();
-          dispatch(getEmployeesMain(employeesGet.data));
+          dispatch(getEmployeesMain(employeesGet.data.data));
       }
     } catch (error) {
       console.log("error while adding new employee", error);
@@ -77,7 +79,7 @@ export const updateEmployeeAsync = (data, id) => {
       // dispatch(addEmployee(employees.data));
       if(employees){
         const employeesGet = await EmployeeApi.getEmployees();
-          dispatch(getEmployeesMain(employeesGet.data));
+          dispatch(getEmployeesMain(employeesGet.data.data));
       }
     } catch (error) {
       console.log("error while adding new employee", error);
@@ -95,7 +97,7 @@ export const removeEmployeeAsync = (row, id) => {
       // dispatch(removeEmployee(employees.data));
       if(employees){
         const employeesGet = await EmployeeApi.getEmployees();
-          dispatch(getEmployeesMain(employeesGet.data));
+          dispatch(getEmployeesMain(employeesGet.data.data));
       }
     } catch (error) {
       console.log("error while changing the status of a employee", error);

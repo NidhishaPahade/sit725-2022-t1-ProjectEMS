@@ -5,7 +5,7 @@ const employeeReducer = (state = initialState.employees, action) => {
   switch (action.type) {
     case actionTypes.GET_EMPLOYEES:
       console.log(action.data, 'actionactionaction')
-      return {...action.data};
+      return [...action.data];
 
     case actionTypes.ADD_EMPLOYEE:
       return [...state, action.data];

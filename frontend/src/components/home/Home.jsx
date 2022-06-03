@@ -32,7 +32,10 @@ class Home extends Component {
     this.setState({
       isLoading: true
     })
-    this.props.actions.getEmployeesAsync();
+    this.props.actions.getEmployeesAsync().then(res => {
+      this.props.actions.getEmployeesMain(res)
+    })
+
     let today = moment(new Date()).format('MM-DD-YYYY')
     axios.get(`http://localhost:3001/attendance/get/${today}/${today}`).then(res => {
       console.log(res.data.data)
@@ -109,6 +112,7 @@ class Home extends Component {
 
   employeListMain = () => {
     let array = this.state.attendaceList || []
+    console.log(array, "arrayarrayarrayarray")
     array.length ? array = array.sort((a, b) => a.name.localeCompare(b.name)) : []
     return (array || []).map(item => {
       return (
@@ -129,8 +133,12 @@ class Home extends Component {
 
   render() {
     const { attendanceForm } = this.state;
-
-    const employeesFormated = (this.props.employees.data || []).map(emp => {
+    console.log(this.props, "this.props.employees")
+    let arr = []
+    if(this.props && this.props.employees && this.props.employees && this.props.employees.length){
+      arr = [...this.props.employees]
+    }
+    const employeesFormated = ( arr || []).map(emp => {
       return {
         value: emp._id,
         label: `${emp.name} ${emp.surname}`

@@ -19,25 +19,27 @@ class Salaries extends Component {
   }
 
   componentDidMount() {
-    this.props.actions.getEmployeesAsync()
+    this.props.actions.getEmployeesAsync().then(res => {
+      this.props.actions.getEmployeesMain(res)
+    })
   }
 
   handleSubmitMain = () => {
     let { salaryValue, editData } = this.state;
-    if(salaryValue.length){
-      if(salaryValue.length <= 10){
-        this.props.actions.updateEmployeeAsync({salary:salaryValue} , editData._id)
+    if (salaryValue.length) {
+      if (salaryValue.length <= 10) {
+        this.props.actions.updateEmployeeAsync({ salary: salaryValue }, editData._id)
         this.setState({
           editData: {},
           showModal: false,
           salaryValue: ''
         });
-      }else{
+      } else {
         toast.error('Salary should be less then 10000000000', { autoClose: 2000 });
         return
       }
-    
-    }else{
+
+    } else {
       toast.error('Please enter correct salary', { autoClose: 2000 });
       return
     }
@@ -56,8 +58,8 @@ class Salaries extends Component {
               <div className="row">
                 <div className="col-md-9">
                   <EmployeesTableSalary
-                    employees={this.props.employees}
-                    setEmployeeEdit={(data) => this.setState({ salaryValue : data.salary , editData: data, showModal: true })}
+                    employees={[...this.props.employees]}
+                    setEmployeeEdit={(data) => this.setState({ salaryValue: data.salary, editData: data, showModal: true })}
                   />
                 </div>
                 <div className="col-md-3 generate-salary-illustration_wrapper">
@@ -83,7 +85,7 @@ class Salaries extends Component {
             <div className="form-group">
               <label htmlFor="salarru">Add Employee Salary *</label>
               <input
-                onChange={(e) => this.setState({ salaryValue : e.target.value })}
+                onChange={(e) => this.setState({ salaryValue: e.target.value })}
                 name="salarru"
                 component="input"
                 type="number"
@@ -105,7 +107,7 @@ class Salaries extends Component {
               type="submit"
               style={{ height: 40 }}
               className="btn btn-seconday submit-button"
-              onClick={(e) => this.setState({  showModal : false, editData: {}})}
+              onClick={(e) => this.setState({ showModal: false, editData: {} })}
             >
               Cancel
             </button>
@@ -120,7 +122,7 @@ class Salaries extends Component {
 Salaries.propTypes = {
   employees: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
-  updateEmployee:  PropTypes.func,
+  updateEmployee: PropTypes.func,
 };
 
 
